@@ -1,0 +1,21 @@
+---
+# tasks file for ansible-cloud-init role
+
+# Install cloud-init here, not via kickstart
+- name: Install cloud-init
+  package:
+    name: cloud-init
+    state: installed
+
+# Enable cloud-init but do not start it
+- name: Enable cloud-init to start on boot
+  systemd:
+    name: cloud-init
+    enabled: yes
+    state: stopped
+
+# This file should already exist, we are just replacing it
+- name: Copy cloud.cfg
+  template:
+    src: templates/etc/cloud/cloud.cfg.j2
+    dest: /etc/cloud/cloud.cfg
